@@ -10,7 +10,7 @@ class Solver{
 public:
     Solver()= default;;
     virtual ~Solver()= default;;
-    virtual S solve(P problem);
+    virtual S solve(P problem) = 0;
 };
 
 
