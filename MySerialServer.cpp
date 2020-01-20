@@ -70,6 +70,7 @@ void MySerialServer<P, S>::acceptClient(sockaddr_in address, ClientHandler<P, S>
             std::cerr << "Client wasn't connected for 2 minutes" << std::endl;
             this->stop(socketfd);
         } else {
+            std::cout << "Client was connected" << std::endl;
             client->handleClient(client_socket);
         }
     }
@@ -77,8 +78,8 @@ void MySerialServer<P, S>::acceptClient(sockaddr_in address, ClientHandler<P, S>
 
 int boot::Main::main(int argc, char *argv) {
     Server<string, string> *server = new MySerialServer<string, string>();
-    Solver<string, string> *solver = new StringReverser<string, string>;
-    CacheManager<string, string> *cache = new FileCacheManager<string, string>;
+    Solver<string, string> *solver = new StringReverser<string, string>();
+    CacheManager<string, string> *cache = new FileCacheManager<string, string>();
     ClientHandler<string, string> *clientHandler = new MyTestClientHandler<string, string>(solver, cache);
     server->open(5400, clientHandler);
     return 0;

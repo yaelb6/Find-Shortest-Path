@@ -12,11 +12,11 @@ template<typename P, typename S>
 class ClientHandler {
 
 public:
-    ClientHandler()= default;;
-    virtual void handleClient(int socket);
-    virtual void setCache(CacheManager<P,S>* cacheManager);
-    virtual void setSolver(Solver<P,S>* solver);
-    virtual ~ClientHandler()= default;;
+    ClientHandler()= default;
+    virtual void handleClient(int socket) = 0;
+    virtual void setCache(CacheManager<P,S>* cacheManager) = 0;
+    virtual void setSolver(Solver<P,S>* solver) = 0;
+    virtual ~ClientHandler()= default;
 };
 
 

@@ -6,7 +6,6 @@
 #define EX4_JENNY_YAEL_MYSERIALSERVER_H
 
 #include "Server.h"
-#include "MySerialServer.h"
 #include "StringReverser.h"
 #include "FileCacheManager.h"
 #include "MyTestClientHandler.h"
