@@ -12,22 +12,17 @@ template<typename T>
 class Matrix : public Searchable<T> {
 private:
     int size;
-
 public:
     State<T> getInitialState();
-
     bool isGoalState(State<T> v);
-
-    list <State<T>> getAllPossibleStates(State<T> st);
-
-    int getSize() const {
-        return size;
-    }
+    list<State<T>> getAllPossibleStates(State<T> st);
+    int getSize();
 };
 
 template<typename T>
-State<T> Matrix<T>::getInitialState() {
-    return State<T>(T());
+int Matrix<T>::getSize() {
+    return this->size;
+
 }
 
 
