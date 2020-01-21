@@ -15,14 +15,14 @@ using namespace std;
 
 template<typename T>
 class BFS : public Searcher<T> {
-    vector<State<T>> search(Searchable<T> matrix);
+    vector<State<T>*> search(Searchable<T> matrix);
 };
 
 template<typename T>
-vector<State<T>> BFS<T>::search(Searchable<T> matrix) {
-    vector<State<T>> path;
+vector<State<T>*> BFS<T>::search(Searchable<T> matrix) {
+    vector<State<T>*> path;
     int size = 0;
-    State<T> initial, node, goal;
+    State<T>* initial, node, goal;
     auto *mtx = dynamic_cast<Matrix<T> *>(matrix);
     if (mtx) {
         size = mtx->getSize();
@@ -34,11 +34,11 @@ vector<State<T>> BFS<T>::search(Searchable<T> matrix) {
         visited[i] = false;
     }
     //define queue and its iterator
-    list<State<T>> queue;
-    typename list<State<T>>::iterator it;
+    list<State<T>*> queue;
+    typename list<State<T>*>::iterator it;
 
     //mark the first as visited
-    visited[initial.getIndex()] = true;
+    visited[initial->getIndex()] = true;
     queue.push_back(initial);
     while (!queue.empty()){
         //remove the current node from dequqe
@@ -50,7 +50,7 @@ vector<State<T>> BFS<T>::search(Searchable<T> matrix) {
             return path;
         }
         else {
-            list<State<T>> adj = matrix.getAllPossibleStates(node);
+            list<State<T>*> adj = matrix.getAllPossibleStates(node);
             for (it=adj.begin(); it!=adj.end(); it++){
                 if (!visited[it->getIndex()]){
                     visited[it->getIndex()] = true;

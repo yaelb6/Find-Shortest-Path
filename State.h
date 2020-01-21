@@ -11,10 +11,10 @@ private:
     int index;
     T state;
     double cost;
-    State<T> cameFrom;
+    State<T>* cameFrom;
 public:
     State(T state1);
-    bool Equals(State<T> s);
+    bool Equals(State<T>* s);
     int getIndex();
     double getCost();
 };
@@ -25,8 +25,8 @@ State<T>::State(T state1) {
 }
 
 template<typename T>
-bool State<T>::Equals(State<T> s) {
-    return state.Equals(s.state);
+bool State<T>::Equals(State<T>* s) {
+    return state.Equals(s->state);
 }
 
 template<typename T>
