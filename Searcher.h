@@ -6,6 +6,7 @@
 #define EX4_SEARCHER_H
 
 #include <vector>
+#include <string>
 #include "Searcher.h"
 #include "Point.h"
 #include "Searchable.h"
@@ -16,13 +17,12 @@ class Searcher {
 public:
     virtual string search(Searchable<T> matrix) = 0;
     virtual int getNumberOfNodesEvaluated() = 0;
-    string traceBack(vector<State<T>*>);
+    string traceBack(State<T>*);
 };
 
 template<typename T>
 string Searcher<T>::traceBack(State<T> *) {
-    //create the trace back from the given goal
-
+    return std::__cxx11::string();
 }
 
 
