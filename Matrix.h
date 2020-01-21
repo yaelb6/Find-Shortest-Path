@@ -10,12 +10,25 @@
 
 template<typename T>
 class Matrix : public Searchable<T> {
-public:
+private:
     int size;
+
+public:
     State<T> getInitialState();
-    State<T> isGoalState();
-    list<State<T>> getAllPossibleStates(State<T> st);
+
+    bool isGoalState(State<T> v);
+
+    list <State<T>> getAllPossibleStates(State<T> st);
+
+    int getSize() const {
+        return size;
+    }
 };
+
+template<typename T>
+State<T> Matrix<T>::getInitialState() {
+    return State<T>(T());
+}
 
 
 #endif //EX4_MATRIX_H

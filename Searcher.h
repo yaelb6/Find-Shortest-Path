@@ -14,7 +14,7 @@ using namespace std;
 template<typename T>
 class Searcher {
 public:
-    virtual vector<Point> search(Searchable<T> algoritm) = 0;
+    virtual vector<State<T>>  search(Searchable<T> algorithm) = 0;
 };
 
 

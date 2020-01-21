@@ -8,6 +8,11 @@
 template<typename T>
 class State {
 private:
+    int index;
+public:
+    int getIndex() const;
+
+private:
     T state;
     double cost;
     State<T> cameFrom;
@@ -24,6 +29,11 @@ State<T>::State(T state1) {
 template<typename T>
 bool State<T>::Equals(State<T> s) {
     return state.Equals(s.state);
+}
+
+template<typename T>
+int State<T>::getIndex() const {
+    return index;
 }
 
 
