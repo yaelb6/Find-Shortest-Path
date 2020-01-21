@@ -9,6 +9,7 @@
 #include "StringReverser.h"
 #include "FileCacheManager.h"
 #include "MyTestClientHandler.h"
+#include "ClientHandler.h"
 #include <sys/socket.h>
 #include <string>
 #include <iostream>
