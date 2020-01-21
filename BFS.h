@@ -15,7 +15,11 @@ using namespace std;
 
 template<typename T>
 class BFS : public Searcher<T> {
+private:
+    int numOfNodes;
+public:
     vector<State<T>*> search(Searchable<T> matrix);
+    int getNumberOfNodesEvaluated();
 };
 
 template<typename T>
@@ -39,6 +43,7 @@ vector<State<T>*> BFS<T>::search(Searchable<T> matrix) {
 
     //mark the first as visited
     visited[initial->getIndex()] = true;
+    this->numOfNodes++;
     queue.push_back(initial);
     while (!queue.empty()){
         //remove the current node from dequqe
@@ -52,13 +57,24 @@ vector<State<T>*> BFS<T>::search(Searchable<T> matrix) {
         else {
             list<State<T>*> adj = matrix.getAllPossibleStates(node);
             for (it=adj.begin(); it!=adj.end(); it++){
+                if(it->getCost() == -1) {
+                    continue;
+                }
+                it->setCameFrom(node);
+                it->setCost(node->getCost() + it->getCost());
                 if (!visited[it->getIndex()]){
                     visited[it->getIndex()] = true;
+                    this->numOfNodes++;
                     queue.push_back(it);
                 }
             }
         }
     }
+}
+
+template<typename T>
+int BFS<T>::getNumberOfNodesEvaluated() {
+    return this->numOfNodes;
 }
 
 #endif //EX4_BFS_H
