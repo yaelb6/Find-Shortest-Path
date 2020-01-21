@@ -18,51 +18,49 @@ class BFS : public Searcher<T> {
 private:
     int numOfNodes;
 public:
-    vector<State<T>*> search(Searchable<T> matrix);
+    string search(Searchable<T> matrix);
+
     int getNumberOfNodesEvaluated();
 };
 
 template<typename T>
-vector<State<T>*> BFS<T>::search(Searchable<T> matrix) {
-    vector<State<T>*> path;
+string BFS<T>::search(Searchable<T> matrix) {
     int size = 0;
-    State<T>* initial, node, goal;
+    State<T> *initial, *node;
     auto *mtx = dynamic_cast<Matrix<T> *>(matrix);
     if (mtx) {
         size = mtx->getSize();
         initial = mtx->getInitialState();
     }
-    bool *visited = new bool[size*size];
+    bool *visited = new bool[size * size];
     //initialize all the vertices as not visited
-    for (int i = 0; i < size*size; i++) {
+    for (int i = 0; i < size * size; i++) {
         visited[i] = false;
     }
     //define queue and its iterator
-    list<State<T>*> queue;
-    typename list<State<T>*>::iterator it;
+    list<State<T> *> queue;
+    typename list<State<T> *>::iterator it;
 
     //mark the first as visited
     visited[initial->getIndex()] = true;
     this->numOfNodes++;
     queue.push_back(initial);
-    while (!queue.empty()){
-        //remove the current node from dequqe
+    while (!queue.empty()) {
+        //remove the current node from queue
         node = queue.front();
-        path.push_back(node);
         queue.pop_front();
         //if the current node is the goal
-        if(matrix.isGoalState(node)){
-            return path;
-        }
-        else {
-            list<State<T>*> adj = matrix.getAllPossibleStates(node);
-            for (it=adj.begin(); it!=adj.end(); it++){
-                if(it->getCost() == -1) {
+        if (matrix.isGoalState(node)) {
+            return traceBack(node);
+        } else {
+            list<State<T> *> adj = matrix.getAllPossibleStates(node);
+            for (it = adj.begin(); it != adj.end(); it++) {
+                if (it->getCost() == -1) {
                     continue;
                 }
                 it->setCameFrom(node);
                 it->setCost(node->getCost() + it->getCost());
-                if (!visited[it->getIndex()]){
+                if (!visited[it->getIndex()]) {
                     visited[it->getIndex()] = true;
                     this->numOfNodes++;
                     queue.push_back(it);
