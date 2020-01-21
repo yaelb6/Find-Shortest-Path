@@ -15,6 +15,7 @@ template<typename T>
 class Searcher {
 public:
     virtual vector<State<T>> search(Searchable<T> matrix) = 0;
+
 };
 
 

@@ -38,5 +38,4 @@ template<typename T>
 double State<T>::getCost() {
     return this->cost;
 }
-
 #endif //EX4_STATE_H

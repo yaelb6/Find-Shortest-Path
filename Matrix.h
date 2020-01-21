@@ -22,6 +22,7 @@ public:
 template<typename T>
 int Matrix<T>::getSize() {
     return this->size;
+
 }
 
 
