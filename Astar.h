@@ -6,15 +6,15 @@
 #define EX4_ASTAR_H
 
 #include "Searcher.h"
+template<typename T>
+class Astar : public Searcher<T>{
 
-class Astar : public Searcher{
-    template<typename T>
-    vector<Point> search(Searchable<T> algoritm);
+    vector<Point> search(Searchable<T> algorithm);
 };
 
 
 template<typename T>
-vector<Point> Astar::search(Searchable<T> algoritm) {
+vector<Point> Astar<T>::search(Searchable<T> algorithm) {
     return vector<Point>();
 }
 

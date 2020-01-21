@@ -6,15 +6,13 @@
 #define EX4_DFS_H
 
 #include "Searcher.h"
-//alg
-
-class DFS : public Searcher{
-    template<typename T>
-    vector<Point> search(Searchable<T> algoritm);
+template<typename T>
+class DFS : public Searcher<T>{
+    vector<Point> search(Searchable<T> algorithm);
 };
 
 template<typename T>
-vector<Point> DFS::search(Searchable<T> algoritm) {
+vector<Point> DFS<T>::search(Searchable<T> algorithm) {
     return vector<Point>();
 }
 #endif //EX4_DFS_H
