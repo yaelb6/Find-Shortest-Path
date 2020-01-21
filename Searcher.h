@@ -11,10 +11,9 @@
 #include "Searchable.h"
 
 using namespace std;
-
+template<typename T>
 class Searcher {
 public:
-    template<typename T>
     virtual vector<Point> search(Searchable<T> algoritm) = 0;
 };
 

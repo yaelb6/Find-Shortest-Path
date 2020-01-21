@@ -6,14 +6,13 @@
 #define EX4_BFS_H
 
 #include "Searcher.h"
-
-class BFS : public Searcher {
-    template<typename T>
-    vector<Point> search(Searchable<T> algoritm);
+template<typename T>
+class BFS : public Searcher<T> {
+    vector<Point> search(Searchable<T> algorithm);
 };
 
 template<typename T>
-vector<Point> BFS::search(Searchable<T> algoritm) {
+vector<Point> BFS<T>::search(Searchable<T> algorithm) {
     return vector<Point>();
 }
 

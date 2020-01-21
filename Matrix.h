@@ -10,7 +10,11 @@
 
 template<typename T>
 class Matrix : public Searchable<T> {
-
+public:
+    int size;
+    State<T> getInitialState();
+    State<T> isGoalState();
+    list<State<T>> getAllPossibleStates(State<T> st);
 };
 
 
