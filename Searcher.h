@@ -14,9 +14,16 @@ using namespace std;
 template<typename T>
 class Searcher {
 public:
-    virtual vector<State<T>*> search(Searchable<T> matrix) = 0;
+    virtual string search(Searchable<T> matrix) = 0;
     virtual int getNumberOfNodesEvaluated() = 0;
+    string traceBack(vector<State<T>*>);
 };
+
+template<typename T>
+string Searcher<T>::traceBack(State<T> *) {
+    //create the trace back from the given goal
+
+}
 
 
 #endif //EX4_SEARCHER_H
