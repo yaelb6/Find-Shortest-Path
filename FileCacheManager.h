@@ -12,8 +12,8 @@ using namespace std;
 template<typename P, typename S>
 class FileCacheManager : public CacheManager<P,S> {
 public:
-    map<P, S> problemsMap;
-    typename map<P, S>::iterator iter;
+    map<P, string> problemsMap;
+    typename map<P, string>::iterator iter;
     FileCacheManager()= default;;
     virtual ~FileCacheManager()= default;;
 
@@ -25,16 +25,16 @@ public:
         return false;
     }
 
-    void save(S solution, P problem) override {
-        problemsMap.insert(pair<P,S>(problem, solution));
+    void save(string fileName, P problem) override {
+        problemsMap.insert(pair<P,string>(problem, fileName));
     }
 
-    S getSolution(P problem) override {
+    string getSolution(P problem) override {
         iter = problemsMap.find(problem);
         if (iter != problemsMap.end()) {
             return iter->second;
         }
-        return nullptr;
+        return "";
     }
 };
 
