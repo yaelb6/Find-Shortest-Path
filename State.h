@@ -13,6 +13,15 @@ private:
     double cost;
     State<T>* cameFrom;
 public:
+    void setIndex(int index);
+
+    void setState(T state);
+
+    void setCost(double cost);
+
+    void setCameFrom(State<T> *cameFrom);
+
+public:
     State(T state1);
     bool Equals(State<T>* s);
     int getIndex();
@@ -38,4 +47,25 @@ template<typename T>
 double State<T>::getCost() {
     return this->cost;
 }
+
+template<typename T>
+void State<T>::setIndex(int index) {
+    State::index = index;
+}
+
+template<typename T>
+void State<T>::setState(T state) {
+    State::state = state;
+}
+
+template<typename T>
+void State<T>::setCost(double cost) {
+    State::cost = cost;
+}
+
+template<typename T>
+void State<T>::setCameFrom(State<T> *cameFrom) {
+    State::cameFrom = cameFrom;
+}
+
 #endif //EX4_STATE_H
