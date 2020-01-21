@@ -6,7 +6,6 @@
 #define EX4_BFS_H
 
 #include "Searcher.h"
-#include "Searcher.h"
 
 class BFS : public Searcher {
     template<typename T>

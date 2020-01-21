@@ -6,7 +6,7 @@
 #define EX4_DFS_H
 
 #include "Searcher.h"
-#include "Searcher.h"
+//alg
 
 class DFS : public Searcher{
     template<typename T>

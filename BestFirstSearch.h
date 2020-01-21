@@ -7,7 +7,7 @@
 
 
 #include "Searcher.h"
-#include "Searcher.h"
+
 class BestFirstSearch  : public Searcher{
     template<typename T>
     vector<Point> search(Searchable<T> algoritm);

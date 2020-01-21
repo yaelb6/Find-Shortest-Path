@@ -6,7 +6,6 @@
 #define EX4_ASTAR_H
 
 #include "Searcher.h"
-#include "Searcher.h"
 
 class Astar : public Searcher{
     template<typename T>
