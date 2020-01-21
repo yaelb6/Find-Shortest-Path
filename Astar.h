@@ -9,12 +9,13 @@
 template<typename T>
 class Astar : public Searcher<T>{
 
-    vector<Point> search(Searchable<T> algorithm);
+    vector<State<T>*> search(Searchable<T> matrix);
 };
 
 
 template<typename T>
-vector<Point> Astar<T>::search(Searchable<T> algorithm) {
+vector<State<T>*> Astar<T>::search(Searchable<T> matrix) {
+
     return vector<Point>();
 }
 

@@ -13,10 +13,11 @@ class Matrix : public Searchable<T> {
 private:
     int size;
 public:
-    State<T> getInitialState();
-    bool isGoalState(State<T> v);
-    list<State<T>> getAllPossibleStates(State<T> st);
+    State<T>* getInitialState();
+    bool isGoalState(State<T>* v);
+    list<State<T>*> getAllPossibleStates(State<T>* st);
     int getSize();
+    State<T>* getGoalState();
 };
 
 template<typename T>

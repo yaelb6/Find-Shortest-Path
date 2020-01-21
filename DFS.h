@@ -11,13 +11,13 @@ using namespace std;
 
 template<typename T>
 class DFS : public Searcher<T>{
-    vector<State<T>> search(Searchable<T> matrix);
+    vector<State<T>*> search(Searchable<T> matrix);
     void DFSRecursive(State<T> v, bool visited[], vector<State<T>> vector[], Searchable<T> matrix);
 };
 
 template<typename T>
-vector<State<T>> DFS<T>::search(Searchable<T> matrix) {
-    vector <State<T>> vectorStates;
+vector<State<T>*> DFS<T>::search(Searchable<T> matrix) {
+    vector <State<T>*> vectorStates;
     int size;
     auto *isMatrix = dynamic_cast<Matrix<T>*>(matrix);
     if(isMatrix) {
@@ -27,7 +27,7 @@ vector<State<T>> DFS<T>::search(Searchable<T> matrix) {
     //initialize not visited to all states
     bool *visited = new bool[size];
     for (int i = 0; i < size; i++) {
-        visited[size] = false;
+        visited[i] = false;
     }
     //calling recursive function of dfs with the initialState
     DFSRecursive(matrix->getInitialState(), visited, &vectorStates);
@@ -35,7 +35,7 @@ vector<State<T>> DFS<T>::search(Searchable<T> matrix) {
 }
 
 template<typename T>
-void DFS<T>::DFSRecursive(State<T> v, bool *visited, vector <State<T>> *vector, Searchable<T> matrix) {
+void DFS<T>::DFSRecursive(State<T>* v, bool *visited, vector <State<T>*> *vector, Searchable<T> matrix) {
     //update the state was visited and insert to vector path
     int index = v.getIndex();
     visited[index] = true;
@@ -43,8 +43,8 @@ void DFS<T>::DFSRecursive(State<T> v, bool *visited, vector <State<T>> *vector, 
     if (matrix.isGoalState(v)) {
         return;
     }
-    list<State<T>> adj = matrix.getAllPossibleStates(v);
-    typename list<State<T>>::iterator iter;
+    list<State<T>*> adj = matrix.getAllPossibleStates(v);
+    typename list<State<T>*>::iterator iter;
     for(iter = adj.begin(); iter != adj.end(); ++iter){
         //if it's a block adj
         if(iter->getCost() == -1) {
