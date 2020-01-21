@@ -21,7 +21,6 @@ public:
 
     void setCameFrom(State<T> *cameFrom);
 
-public:
     State(T state1);
     bool Equals(State<T>* s);
     int getIndex();
