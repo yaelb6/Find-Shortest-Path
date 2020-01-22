@@ -9,8 +9,8 @@
 #include "Solver.h"
 #include "Searcher.h"
 
-template <typename P, typename S, typename T>
-class ObjectAdapter : public Solver<P,S>{
+template<typename P, typename S, typename T>
+class ObjectAdapter : public Solver<P, S> {
 private:
     Searcher<T> searcher;
 public:
@@ -27,9 +27,12 @@ public:
     void setSearcher(const Searcher<T> &searcher) {
         ObjectAdapter::searcher = searcher;
     }
+
     S solve(P problem) {
-        Searchable<T> *searchable = dynamic_cast<Searchable<T>*>(problem);
-        return searcher.search(searchable);
+        Searchable<T> *searchable = dynamic_cast<Searchable<T> *>(problem);
+        if (searchable) {
+            return searcher.search(searchable);
+        }
     }
 };
 

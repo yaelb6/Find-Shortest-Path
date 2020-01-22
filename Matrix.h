@@ -36,10 +36,7 @@ public:
 
     State<T> *getGoalState();
 
-    //vector <string> split(string &basicString, string basicString1);
     vector <string> split(string str, string splitBy);
-
-
 };
 
 template<typename T>
@@ -55,13 +52,13 @@ Matrix<T>::Matrix(vector <string> matAsString) {
     vector <vector<State<T>>> mtx;
     int index = 0;
     int i = 0, j;
-    for (auto it = matAsString.begin(); it != matAsString.end(); it++) {
+    for(int k=0;k<matAsString.size()-2;k++){
         vector <string> splitedLine;
         vector <State<T>> line;
         j = 0;
         //split the string by ","
         string splitBy = ",";
-        splitedLine = split(*it, splitBy);
+        splitedLine = split(matAsString[k], splitBy);
         for (auto iter = splitedLine.begin(); iter != splitedLine.end(); iter++) {
             int index1 = index;
             index++;
@@ -76,6 +73,14 @@ Matrix<T>::Matrix(vector <string> matAsString) {
         mtx.push_back(line);
     }
     this->matrix = mtx;
+    vector <string> splitInitial = split(matAsString[size-2], ",");
+    int xInitial = stoi(splitInitial[0]);
+    int yInitial = stoi(splitInitial[1]);
+    this->initial = matrix[xInitial][yInitial];
+    vector <string> splitGoal = split(matAsString[size-1], ",");
+    int xGoal = stoi(splitInitial[0]);
+    int yGoal = stoi(splitInitial[1]);
+    this->goal = matrix[xGoal][yGoal];
 }
 
 template<typename T>
