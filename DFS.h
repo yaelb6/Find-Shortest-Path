@@ -12,11 +12,15 @@ using namespace std;
 template<typename T>
 class DFS : public Searcher<T>{
 private:
-    int numOfNodes = 0;
+    int numOfNodes;
 public:
     string search(Searchable<T> matrix);
     void DFSRecursive(State<T>* v, bool visited[], Searchable<T> matrix);
     int getNumberOfNodesEvaluated();
+
+    virtual ~DFS();
+
+    DFS();
 };
 
 template<typename T>
@@ -65,6 +69,16 @@ void DFS<T>::DFSRecursive(State<T>* v, bool *visited, Searchable<T> matrix) {
 template<typename T>
 int DFS<T>::getNumberOfNodesEvaluated() {
     return this->numOfNodes;
+}
+
+template<typename T>
+DFS<T>::DFS() {
+    this->numOfNodes = 0;
+}
+
+template<typename T>
+DFS<T>::~DFS() {
+
 }
 
 #endif //EX4_DFS_H
