@@ -28,13 +28,16 @@ public:
     void setCameFrom(State<T> *cameFrom);
 
     State(T state1);
-    State(int index1, T point,double cost1);
+    State(int index1,T point, double cost1);
+
+    //State(int index, T state, double cost, State<T> *cameFrom);
+
     bool Equals(State<T>* s);
     int getIndex();
     double getCost();
 };
 template<typename T>
-State<T>::State(int index1, T point,double cost1) {
+State<T>::State(int index1,T point,double cost1) {
     this->index= index1;
     this->state = point;
     this->cost = cost1;
@@ -85,5 +88,6 @@ template<typename T>
 State<T> *State<T>::getCameFrom() const {
     return cameFrom;
 }
+
 
 #endif //EX4_STATE_H
