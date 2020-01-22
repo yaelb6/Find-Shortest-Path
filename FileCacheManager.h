@@ -26,8 +26,12 @@ public:
         return iter != filesMap.end();
     }
 
-    void save(string fileName, P problem) override {
+    void save(string fileContent, P problem) override {
         size_t num = hashString(problem);
+        ofstream writeToFile;
+        writeToFile.open(to_string(num) + ".txt", ofstream::out);
+        writeToFile.write(const_cast<char *>(fileContent.c_str()), fileContent.length());
+        writeToFile.close();
         filesMap.insert(make_pair(to_string(num) + ".txt", true));
     }
 
