@@ -8,10 +8,13 @@
 #include "ClientHandler.h"
 #include "Solver.h"
 #include "FileCacheManager.h"
+#include "Matrix.h"
 #include <sys/socket.h>
 #include <string>
 #include <unistd.h>
 #include <cstring>
+#include <vector>
+#include <fstream>
 
 template<typename P, typename S>
 class MyTestClientHandler : public ClientHandler<P,S>{
@@ -30,38 +33,51 @@ public:
 template<typename P, typename S>
 void MyTestClientHandler<P, S>::handleClient(int socket) {
     char buffer[1024] = "";
+    vector<string> vectorString;
+    string allStrings = "";
     while (read(socket, buffer, 1024) > 0) {
         //converting char array to string
         string s = "";
         for (unsigned int i = 0; i < sizeof(buffer); i++) {
-            if (buffer[i] == '\0') {
+            if (buffer[i] == '\n') {
                 break;
             }
             s = s + buffer[i];
         }
+        allStrings += s;
         //string is "end", ending connection with client
         if (s == "end") {
             close(socket);
-            return;
+            break;
         } else {
-            string solution;
-            //if string exist in fileCacheManager
-            if (fileCache->hasSolution(s)) {
-                solution = fileCache->getSolution(s);
-                char* solutionString = const_cast<char *>(solution.c_str());
-                //sending the solution to client
-                send(socket , solutionString , strlen(solutionString) , 0);
-            }
-                //calling the solver to find solution for problem
-            else {
-                solution = solver->solve(s);
-                fileCache->save(solution, s);
-                char* solutionString = const_cast<char *>(solution.c_str());
-                //sending the solution to client
-                send(socket , solutionString , strlen(solutionString) , 0);
-            }
+            vectorString.push_back(s);
         }
     }
+    Matrix<State<Point*>*> *matrix = new Matrix<State<Point*>*>(vectorString);
+
+    string fileName, solToClient, contentFile;
+    //if string exist in fileCacheManager
+    if (fileCache->hasSolution(allStrings)) {
+        //return file name
+        fileName = fileCache->getSolution(allStrings);
+    }
+    //calling the solver to find solution for problem
+    else {
+        //return file content
+        contentFile = solver->solve(matrix);
+        //save file in cache
+        fileCache->save(contentFile, allStrings);
+        //return file name
+        fileName = fileCache->getSolution(allStrings);
+    }
+    ifstream readSolution(fileName);
+    if (readSolution) {
+        getline(readSolution, solToClient);
+    }
+    readSolution.close();
+    char* solutionString = const_cast<char *>(solToClient.c_str());
+    //sending the solution to client
+    send(socket , solutionString , strlen(solutionString) , 0);
 }
 
 
