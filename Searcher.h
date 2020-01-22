@@ -61,6 +61,7 @@ string Searcher<T>::traceBack(State<T> *current, State<T> *initial) {
             pathCost += " ,";
         }
     }
+    pathCost+="\n"
     return pathCost;
 }
 
