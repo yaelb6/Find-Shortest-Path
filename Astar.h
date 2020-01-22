@@ -11,10 +11,12 @@
 template<typename T>
 class Astar : public Searcher<T>{
 private:
-    int numOfNodes = 0;
+    int numOfNodes;
     bool isInSet(set<pair<double, State<T>*>> set, State<T>* now);
     double calculateH(State<T>* now, State<T>* goal);
 public:
+    Astar();
+    virtual ~Astar();
     string search(Searchable<T> matrix);
     int getNumberOfNodesEvaluated();
 };
@@ -85,6 +87,15 @@ double Astar<T>::calculateH(State<T> *now, State<T> *goal) {
     int disY = goal->getState()->getY() - now->getState()->getY();
 
     return (double)sqrt((disX * disX) + (disY *disY));
+}
+
+template<typename T>
+Astar<T>::Astar() {
+    this->numOfNodes = 0;
+}
+
+template<typename T>
+Astar<T>::~Astar() {
 }
 
 #endif //EX4_ASTAR_H

@@ -12,7 +12,15 @@
 
 template<typename T>
 class BestFirstSearch : public Searcher<T> {
+private:
+    int numOfNodes;
+public:
+    BestFirstSearch();
+
+    virtual ~BestFirstSearch();
+
     string search(Searchable<T> matrix);
+    int getNumberOfNodesEvaluated();
 };
 
 template<typename T>
@@ -68,6 +76,21 @@ string BestFirstSearch<T>::search(Searchable<T> matrix) {
             }
         }
     }
+}
+
+template<typename T>
+BestFirstSearch<T>::BestFirstSearch() {
+    this->numOfNodes = 0;
+}
+
+template<typename T>
+BestFirstSearch<T>::~BestFirstSearch() {
+
+}
+
+template<typename T>
+int BestFirstSearch<T>::getNumberOfNodesEvaluated() {
+    return this->numOfNodes;
 }
 
 template<typename T>

@@ -20,6 +20,10 @@ private:
 public:
     string search(Searchable<T> matrix);
 
+    BFS();
+
+    virtual ~BFS();
+
     int getNumberOfNodesEvaluated();
 };
 
@@ -73,6 +77,16 @@ string BFS<T>::search(Searchable<T> matrix) {
 template<typename T>
 int BFS<T>::getNumberOfNodesEvaluated() {
     return this->numOfNodes;
+}
+
+template<typename T>
+BFS<T>::BFS() {
+    this->numOfNodes = 0;
+}
+
+template<typename T>
+BFS<T>::~BFS() {
+
 }
 
 #endif //EX4_BFS_H

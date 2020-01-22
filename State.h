@@ -43,7 +43,7 @@ State<T>::State(int index1, T point,double cost1) {
 
 template<typename T>
 bool State<T>::Equals(State<T>* s) {
-    return state.Equals(s->state);
+    return state.Equals(s->getState());
 }
 
 template<typename T>
