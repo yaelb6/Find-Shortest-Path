@@ -7,7 +7,19 @@
 
 
 class Point {
+public:
+    int x;
+    int y;
 
+    void setX(int x);
+
+    void setY(int y);
+
+    int getX() const;
+
+    int getY() const;
+    Point(int x, int y);
+    bool Equals(Point point1, Point point2);
 };
 
 
