@@ -22,14 +22,17 @@ public:
     void setCameFrom(State<T> *cameFrom);
 
     State(T state1);
+    State(int index1, T point,double cost1);
     bool Equals(State<T>* s);
     int getIndex();
     double getCost();
 };
-
 template<typename T>
-State<T>::State(T state1) {
-    this->state = state1;
+State<T>::State(int index1, T point,double cost1) {
+    this->index= index1;
+    this->state = point;
+    this->cost = cost1;
+    this->cameFrom = nullptr;
 }
 
 template<typename T>

@@ -51,12 +51,19 @@ string BestFirstSearch<T>::search(Searchable<T> matrix) {
                 if (it->getCost() == -1) {
                     continue;
                 }
-                it->setCameFrom(node);
-                it->setCost(node->getCost() + it->getCost());
-                if (!visited[it->getIndex()]) {
+//                it->setCameFrom(node);
+//                it->setCost(node->getCost() + it->getCost());
+                if ((!visited[it->getIndex()]) && (!contains(priorityQueue, node))) {
+                    node = it;
+                    priorityQueue.push_back(it);
+                    this->numOfNodes++;
+                }
+                    //if the state is not in visited but in open,
+                    //check is the min cost is already the cost
+                else if (!visited[it->getIndex()]) {
                     visited[it->getIndex()] = true;
                     this->numOfNodes++;
-                    priorityQueue.push_back(it);
+                    saveMinVal(priorityQueue, node);
                 }
             }
         }
