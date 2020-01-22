@@ -6,12 +6,13 @@
 #define EX4_ASTAR_H
 
 #include <set>
+#include <tgmath.h>
 #include "Searcher.h"
 template<typename T>
 class Astar : public Searcher<T>{
 private:
     int numOfNodes = 0;
-    bool isInSet(set<pair<double, State<T>*>>, State<T>*);
+    bool isInSet(set<pair<double, State<T>*>> set, State<T>* now);
     double calculateH(State<T>* now, State<T>* goal);
 public:
     string search(Searchable<T> matrix);
@@ -68,15 +69,22 @@ int Astar<T>::getNumberOfNodesEvaluated() {
 }
 
 template<typename T>
-bool Astar<T>::isInSet(set<pair<double, State<T> *>>, State<T> *) {
+bool Astar<T>::isInSet(set<pair<double, State<T> *>> set, State<T> * now) {
+    for (auto it = set.begin(); it != set.end(); it++)
+    {
+        State<T>* s = it->second;
+        if(s->Equals(now))
+            return true;
+    }
     return false;
 }
 
 template<typename T>
 double Astar<T>::calculateH(State<T> *now, State<T> *goal) {
+    int disX = goal->getState()->getX() - now->getState()->getX();
+    int disY = goal->getState()->getY() - now->getState()->getY();
 
-    return (double)sqrt ((-dest.first)*(row-dest.first)
-                  + (col-dest.second)*(col-dest.second));
+    return (double)sqrt((disX * disX) + (disY *disY));
 }
 
 #endif //EX4_ASTAR_H

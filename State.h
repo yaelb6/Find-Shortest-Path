@@ -10,6 +10,12 @@ class State {
 private:
     int index;
     T state;
+public:
+    T getState() const;
+
+    State<T> *getCameFrom() const;
+
+private:
     double cost;
     State<T>* cameFrom;
 public:
@@ -68,6 +74,16 @@ void State<T>::setCost(double cost) {
 template<typename T>
 void State<T>::setCameFrom(State<T> *cameFrom) {
     State::cameFrom = cameFrom;
+}
+
+template<typename T>
+T State<T>::getState() const {
+    return state;
+}
+
+template<typename T>
+State<T> *State<T>::getCameFrom() const {
+    return cameFrom;
 }
 
 #endif //EX4_STATE_H

@@ -6,8 +6,31 @@
 #define EX4_OBJECTADAPTER_H
 
 
-class ObjectAdapter {
+#include "Solver.h"
+#include "Searcher.h"
 
+template <typename P, typename S, typename T>
+class ObjectAdapter : public Solver<P,S>{
+private:
+    Searcher<T> searcher;
+public:
+    ObjectAdapter(const Searcher<T> &searcher) : searcher(searcher) {
+        this->searcher = searcher;
+    }
+
+    virtual ~ObjectAdapter() {}
+
+    const Searcher<T> &getSearcher() const {
+        return searcher;
+    }
+
+    void setSearcher(const Searcher<T> &searcher) {
+        ObjectAdapter::searcher = searcher;
+    }
+    S solve(P problem) {
+        Searchable<T> *searchable = dynamic_cast<Searchable<T>*>(problem);
+        return searcher.search(searchable);
+    }
 };
 
 
