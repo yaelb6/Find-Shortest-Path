@@ -55,7 +55,7 @@ string BFS<T>::search(Searchable<T> matrix) {
         queue.pop_front();
         //if the current node is the goal
         if (matrix.isGoalState(node)) {
-            return traceBack(node);
+            return Searcher<T>::traceBack(matrix.getGoalState(), matrix.getInitialState());
         } else {
             list<State<T> *> adj = matrix.getAllPossibleStates(node);
             for (it = adj.begin(); it != adj.end(); it++) {

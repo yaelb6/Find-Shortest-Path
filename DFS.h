@@ -38,7 +38,7 @@ string DFS<T>::search(Searchable<T> matrix) {
     }
     //calling recursive function of dfs with the initialState
     DFSRecursive(matrix->getInitialState(), visited, matrix);
-    return traceBack(matrix.getGoalState());
+    return Searcher<T>::traceBack(matrix.getGoalState(), matrix.getInitialState());
 }
 
 template<typename T>
