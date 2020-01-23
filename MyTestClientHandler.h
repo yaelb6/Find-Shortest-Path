@@ -8,6 +8,7 @@
 #include "ClientHandler.h"
 #include "Solver.h"
 #include "FileCacheManager.h"
+#include "ObjectAdapter.h"
 #include "Matrix.h"
 #include <sys/socket.h>
 #include <string>
@@ -18,6 +19,7 @@
 #include <iostream>
 #include <ratio>
 #include <thread>
+#include "Astar.h"
 
 template<typename P, typename S>
 class MyTestClientHandler : public ClientHandler<P,S>{
@@ -31,6 +33,8 @@ public:
     void handleClient(int socket) override;
     void setCache(CacheManager<P,S>* cacheManager);
     void setSolver(Solver<P,S>* solver);
+    ClientHandler<P,S>* copy();
+    MyTestClientHandler(const MyTestClientHandler &obj);
 };
 
 template<typename P, typename S>
@@ -40,7 +44,7 @@ void MyTestClientHandler<P, S>::handleClient(int socket) {
     vector<string> vectorString;
     string s = "";
     int count=0;
-    chrono::duration<int, milli> d(1000);
+    chrono::duration<int, milli> d(5000);
     while (read(socket, buffer, 1024) > 0) {
         this_thread::sleep_for(d);
         //converting char array to string
@@ -94,6 +98,7 @@ void MyTestClientHandler<P, S>::handleClient(int socket) {
     readSolution.close();
     char* solutionString = const_cast<char *>(solToClient.c_str());
     //sending the solution to client
+    this_thread::sleep_for(d);
     send(socket , solutionString , strlen(solutionString) , 0);
     close(socket);
 }
@@ -122,7 +127,15 @@ MyTestClientHandler<P, S>::MyTestClientHandler(Solver<P, S> *solver, CacheManage
 }
 
 template<typename P, typename S>
-MyTestClientHandler<P, S>::MyTestClientHandler() = default;
+MyTestClientHandler<P,S>::MyTestClientHandler(const MyTestClientHandler &obj){
+    this->solver = new ObjectAdapter<Matrix<Point*>,string,Point*>(new Astar<Point*>());
+    this->fileCache = obj.fileCache->copy();
+}
 
+//clone
+template<typename P, typename S>
+ClientHandler<P,S> *MyTestClientHandler<P, S>::copy(){
+    return new MyTestClientHandler(*this);
+}
 
 #endif //EX4_MYTESTCLIENTHANDLER_H

@@ -17,6 +17,7 @@ public:
     virtual void setCache(CacheManager<P,S>* cacheManager) = 0;
     virtual void setSolver(Solver<P,S>* solver) = 0;
     virtual ~ClientHandler()= default;
+    virtual ClientHandler<P,S>* copy() = 0;
 };
 
 

@@ -20,6 +20,8 @@ public:
     hash<string> hashString;
     FileCacheManager()= default;;
     virtual ~FileCacheManager()= default;;
+    FileCacheManager<P,S>* copy();
+    FileCacheManager(const FileCacheManager &obj);
 
     bool hasSolution(P problem) override {
         vector<string> matrixString;
@@ -72,6 +74,17 @@ public:
         return "";
     }
 };
+
+template<typename P, typename S>
+FileCacheManager<P, S> *FileCacheManager<P, S>::copy() {
+    return new FileCacheManager(*this);
+}
+template<typename P, typename S>
+FileCacheManager<P,S>::FileCacheManager(const FileCacheManager &obj){
+    this->filesMap = obj.filesMap;
+    this->iter = obj.iter;
+    this->hashString = obj.hashString;
+}
 
 
 #endif //EX4_FILECACHEMANAGER_H
