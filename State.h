@@ -5,20 +5,19 @@
 #ifndef EX4_STATE_H
 #define EX4_STATE_H
 
+#include "Point.h"
 template<typename T>
 class State {
 private:
     int index;
     T state;
-public:
-    T getState() const;
-
-    State<T> *getCameFrom() const;
-
-private:
     double cost;
     State<T>* cameFrom;
 public:
+    T getState();
+
+    State<T> *getCameFrom();
+
     void setIndex(int index);
 
     void setState(T state);
@@ -27,10 +26,7 @@ public:
 
     void setCameFrom(State<T> *cameFrom);
 
-    State(T state1);
     State(int index1,T point, double cost1);
-
-    //State(int index, T state, double cost, State<T> *cameFrom);
 
     bool Equals(State<T>* s);
     int getIndex();
@@ -46,7 +42,7 @@ State<T>::State(int index1,T point,double cost1) {
 
 template<typename T>
 bool State<T>::Equals(State<T>* s) {
-    return state.Equals(s->getState());
+    return state->Equals(s->getState());
 }
 
 template<typename T>
@@ -80,13 +76,13 @@ void State<T>::setCameFrom(State<T> *cameFrom) {
 }
 
 template<typename T>
-T State<T>::getState() const {
-    return state;
+T State<T>::getState() {
+    return this->state;
 }
 
 template<typename T>
-State<T> *State<T>::getCameFrom() const {
-    return cameFrom;
+State<T> *State<T>::getCameFrom() {
+    return this->cameFrom;
 }
 
 

@@ -15,7 +15,7 @@ using namespace std;
 template<typename T>
 class Searcher {
 public:
-    virtual string search(Searchable<T> matrix) = 0;
+    virtual string search(Searchable<T>* matrix) = 0;
     virtual int getNumberOfNodesEvaluated() = 0;
     string traceBack(State<T>* current, State<T> *intial);
 };
@@ -42,26 +42,26 @@ string Searcher<T>::traceBack(State<T> *current, State<T> *initial) {
         nextY = next->getState()->getY();
         //if step is Up
         if (currX == nextX + 1) {
-            pathCost += "Up (" + next->getCost() + ")";
+            pathCost += "Up (" + to_string(next->getCost()) + ")";
         }
         //if step is Down
         else if (currX == nextX - 1) {
-            pathCost += "Down (" + next->getCost() + ")";
+            pathCost += "Down (" + to_string(next->getCost()) + ")";
         }
         //if step is Right
         else if (currY == nextY - 1) {
-            pathCost += "Right (" + next->getCost() + ")";
+            pathCost += "Right (" + to_string(next->getCost()) + ")";
         }
         //if step is Left
         else {
-            pathCost += "Left (" + next->getCost() + ")";
+            pathCost += "Left (" + to_string(next->getCost()) + ")";
         }
         //add comma after every step, except if it's the last step
         if (i != path.size() - 2) {
             pathCost += " ,";
         }
     }
-    pathCost+="\n"
+    pathCost+="\n";
     return pathCost;
 }
 

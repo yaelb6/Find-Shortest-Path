@@ -17,17 +17,17 @@ private:
 public:
     Astar();
     virtual ~Astar();
-    string search(Searchable<T> matrix);
+    string search(Searchable<T>* matrix);
     int getNumberOfNodesEvaluated();
 };
 
 
 template<typename T>
-string Astar<T>::search(Searchable<T> matrix) {
+string Astar<T>::search(Searchable<T>* matrix) {
     set<pair<double, State<T>*>> openList;
     set<pair<double, State<T>*>> closeList;
     //insert initial state to openList
-    openList.insert(make_pair(0.0, matrix.getInitialState()));
+    openList.insert(make_pair(0.0, matrix->getInitialState()));
     while (!openList.empty()) {
         //deleting from open and insert to close
         auto now = openList.begin();
@@ -35,23 +35,23 @@ string Astar<T>::search(Searchable<T> matrix) {
         closeList.insert(now);
 
         //check if now has the goal state
-        if (matrix.isGoalState(now->second)){
-            return Searcher<T>::traceBack(matrix.getGoalState(), matrix.getInitialState());
+        if (matrix->isGoalState(now->second)){
+            return Searcher<T>::traceBack(matrix->getGoalState(), matrix->getInitialState());
         }
         //if now doesn't have goal state, we will pass over the adj of the state now has
-        list<State<T>*> adj = matrix.getAllPossibleStates(now->second);
+        list<State<T>*> adj = matrix->getAllPossibleStates(now->second);
         for (auto iter = adj.begin(); iter != adj.end(); iter++) {
-            //if state is in closed list or is blocked, continue
-            if ((!isInSet(closeList, iter)) || (iter->getCost() == -1)) {
+            //if state is in closed list, continue
+            if (!isInSet(closeList, iter)) {
                 continue;
             }
             //if the adj is goal state, update state we came from and call traceBack
-            if (matrix.isGoalState(iter)) {
+            if (matrix->isGoalState(iter)) {
                 iter->setCameFrom(now->second);
                 return traceBack(iter);
             }
             else {
-                double h = calculateH(iter, matrix.getGoalState());
+                double h = calculateH(iter, matrix->getGoalState());
                 double f = (h + (iter->getCost()));
                 //adding to openList if doesn't exist there or if exist but f smaller than now->first(previous f value)
                 if ((!isInSet(openList, iter)) || ((isInSet(openList, iter)) && (f < now->first))) {

@@ -17,7 +17,15 @@
 template<typename T>
 class Matrix : public Searchable<T> {
 private:
-    vector <vector<State<T>>> matrix;
+    vector <vector<State<T>*>> matrix;
+    vector<string> matAsString;
+public:
+    void setMatAsString(const vector <string> &matAsString);
+
+public:
+    const vector <string> &getMatAsString() const;
+
+private:
     State<T> *initial;
     State<T> *goal;
     int size;
@@ -49,12 +57,13 @@ template<typename T>
 //the constructor recieve vector of strings,
 //and create vector of vectors of States.
 Matrix<T>::Matrix(vector <string> matAsString) {
-    vector <vector<State<T>>> mtx;
+    vector <vector<State<T>*>> mtx;
     int index = 0;
     int i = 0, j;
+    setMatAsString(matAsString);
     for(int k=0;k<matAsString.size()-2;k++){
         vector <string> splitedLine;
-        vector <State<T>> line;
+        vector <State<T>*> line;
         j = 0;
         //split the string by ","
         string splitBy = ",";
@@ -91,7 +100,7 @@ State<T> *Matrix<T>::getInitialState() {
 template<typename T>
 bool Matrix<T>::isGoalState(State<T> *v) {
     //check if v is the goal state
-    return v->Equals(goal);
+    return v->Equals(this->goal);
 }
 
 template<typename T>
@@ -103,28 +112,29 @@ list<State<T> *> Matrix<T>::getAllPossibleStates(State<T> *st) {
     int maxRow = size - 1;
     int minCol = 0;
     int minRow = 0;
+    int i, j;
     //the state cordinates
-    int i = st->getState().getX();
-    int j = st->getState().getY();
+    i = st->getState()->getX();
+    j = st->getState()->getY();
     Point *up = new Point(i - 1, j);
     Point *right = new Point(i, j + 1);
     Point *left = new Point(i, j - 1);
     Point *down = new Point(i + 1, j);
     //check if every neighbour is legal
     //up neighbour
-    if ((up->getX() >= minRow) && (matrix[i - 1][j] != -1)) {
+    if ((up->getX() >= minRow) && (matrix[i - 1][j]->getCost() != -1)) {
         adj.push_back(matrix[i - 1][j]);
     }
     //right neighbour
-    if ((right->getY() <= maxCol) && (matrix[i][j + 1] != -1)) {
+    if ((right->getY() <= maxCol) && (matrix[i][j + 1]->getCost() != -1)) {
         adj.push_back(matrix[i][j + 1]);
     }
     //left neighbour
-    if ((left->getY() >= minCol) && (matrix[i][j - 1] != -1)) {
+    if ((left->getY() >= minCol) && (matrix[i][j - 1]->getCost() != -1)) {
         adj.push_back(matrix[i][j - 1]);
     }
     //down neighbour
-    if ((down->getY() <= maxRow) && (matrix[i + 1][j] != -1)) {
+    if ((down->getY() <= maxRow) && (matrix[i + 1][j]->getCost() != -1)) {
         adj.push_back(matrix[i + 1][j]);
     }
     return adj;
@@ -148,6 +158,21 @@ vector <string> Matrix<T>::split(string str, string splitBy) {
         }
     }
     return splited;
+}
+
+template<typename T>
+const vector <string> &Matrix<T>::getMatAsString() const {
+    return matAsString;
+}
+
+template<typename T>
+void Matrix<T>::setMatAsString(const vector <string> &matAsString) {
+    Matrix::matAsString = matAsString;
+}
+
+template<typename T>
+State<T> *Matrix<T>::getGoalState() {
+    return this->goal;
 }
 
 

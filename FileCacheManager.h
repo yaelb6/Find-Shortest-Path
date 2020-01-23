@@ -6,6 +6,7 @@
 #define EX4_FILECACHEMANAGER_H
 
 #include "CacheManager.h"
+#include "Matrix.h"
 #include <map>
 #include <fstream>
 
@@ -21,13 +22,31 @@ public:
     virtual ~FileCacheManager()= default;;
 
     bool hasSolution(P problem) override {
-        size_t num = hashString(problem);
+        vector<string> matrixString;
+        string allString = "";
+        Matrix<State<Point*>*> *matrix = dynamic_cast<Matrix<State<Point*>*>*>(&problem);
+        if(matrix) {
+            matrixString = matrix->getMatAsString();
+            for (unsigned int i = 0; i < matrixString.size(); i++) {
+                allString += matrixString[i];
+            }
+        }
+        size_t num = hashString(allString);
         iter = filesMap.find(to_string(num) + ".txt");
         return iter != filesMap.end();
     }
 
     void save(string fileContent, P problem) override {
-        size_t num = hashString(problem);
+        vector<string> matrixString;
+        string allString = "";
+        Matrix<State<Point*>*> *matrix = dynamic_cast<Matrix<State<Point*>*>*>(&problem);
+        if(matrix) {
+            matrixString = matrix->getMatAsString();
+            for (unsigned int i = 0; i < matrixString.size(); i++) {
+                allString += matrixString[i];
+            }
+        }
+        size_t num = hashString(allString);
         ofstream writeToFile;
         writeToFile.open(to_string(num) + ".txt", ofstream::out);
         writeToFile.write(const_cast<char *>(fileContent.c_str()), fileContent.length());
@@ -36,7 +55,16 @@ public:
     }
 
     string getSolution(P problem) override {
-        iter = filesMap.find(problem);
+        vector<string> matrixString;
+        string allString = "";
+        Matrix<State<Point*>*> *matrix = dynamic_cast<Matrix<State<Point*>*>*>(&problem);
+        if(matrix) {
+            matrixString = matrix->getMatAsString();
+            for (unsigned int i = 0; i < matrixString.size(); i++) {
+                allString += matrixString[i];
+            }
+        }
+        iter = filesMap.find(allString);
         if (iter != filesMap.end()) {
             return iter->first;
         }
