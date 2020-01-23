@@ -8,10 +8,12 @@
 #include <set>
 #include <tgmath.h>
 #include "Searcher.h"
+#include <utility>
 template<typename T>
 class Astar : public Searcher<T>{
 private:
     int numOfNodes;
+    pair<double, State<T>*> searchInSet(set<pair<double, State<T>*>> set, State<T>* now);
     bool isInSet(set<pair<double, State<T>*>> set, State<T>* now);
     double calculateH(State<T>* now, State<T>* goal);
 public:
@@ -29,39 +31,53 @@ string Astar<T>::search(Searchable<T>* matrix) {
     //insert initial state to openList
     openList.insert(make_pair(0.0, matrix->getInitialState()));
     while (!openList.empty()) {
-        //deleting from open and insert to close
+        this->numOfNodes++;
         auto now = openList.begin();
-        openList.erase(now);
-        closeList.insert(now);
-
         //check if now has the goal state
         if (matrix->isGoalState(now->second)){
             return Searcher<T>::traceBack(matrix->getGoalState(), matrix->getInitialState());
         }
-        //if now doesn't have goal state, we will pass over the adj of the state now has
+        //if now doesn't have goal state, we will pass over the adj
         list<State<T>*> adj = matrix->getAllPossibleStates(now->second);
         for (auto iter = adj.begin(); iter != adj.end(); iter++) {
             //if state is in closed list, continue
-            if (!isInSet(closeList, *iter)) {
+            if (isInSet(closeList, (*iter))) {
                 continue;
             }
-            //if the adj is goal state, update state we came from and call traceBack
-            if (matrix->isGoalState(*iter)) {
-                (*iter)->setCameFrom(now->second);
-                return traceBack(*iter);
-            }
+//            //if the adj is goal state, update state we came from and call traceBack
+//            if (matrix->isGoalState(*iter)) {
+//                this->numOfNodes++;
+//                (*iter)->setCameFrom(now->second);
+//                return Searcher<T>::traceBack(matrix->getGoalState(), matrix->getInitialState());
+//            }
             else {
                 double h = calculateH((*iter), matrix->getGoalState());
                 double f = (h + ((*iter)->getCost()));
-                //adding to openList if doesn't exist there or if exist but f smaller than now->first(previous f value)
-                if ((!isInSet(openList, (*iter))) || ((isInSet(openList, (*iter))) && (f < now->first))) {
+                //adding to openList if doesn't exist there
+                if (!isInSet(openList, (*iter))) {
                     openList.insert(make_pair(f, *iter));
                     //updating values of state
                     (*iter)->setCameFrom(now->second);
-                    (*iter)->setCost((*iter)->getCost + now->second->getCost());
+                    (*iter)->setCost((*iter)->getCost() + now->second->getCost());
+                }
+                //if exist in openList
+                else {
+                    //if f smaller than the previous f value this state has
+                    pair<double, State<T> *> neighbor = searchInSet(openList, (*iter));
+                    if (neighbor.first > f) {
+                        openList.erase(neighbor);
+                        openList.insert(make_pair(f, *iter));
+                        //updating values of state
+                        (*iter)->setCost((*iter)->getCost() - (*iter)->getCameFrom()->getCost());
+                        (*iter)->setCameFrom(now->second);
+                        (*iter)->setCost((*iter)->getCost() + now->second->getCost());
+                    }
                 }
             }
         }
+        //deleting from open and insert to close
+        openList.erase(*now);
+        closeList.insert(*now);
     }
 }
 
@@ -74,13 +90,21 @@ template<typename T>
 bool Astar<T>::isInSet(set<pair<double, State<T> *>> set, State<T> * now) {
     for (auto it = set.begin(); it != set.end(); it++)
     {
-        State<T>* s = (*it)->second;
+        State<T>* s = it->second;
         if(s->Equals(now))
             return true;
     }
     return false;
 }
-
+template<typename T>
+pair<double, State<T>*> Astar<T>::searchInSet(set<pair<double, State<T> *>> set, State<T> * now) {
+    for (auto it = set.begin(); it != set.end(); it++)
+    {
+        State<T>* s = it->second;
+        if(s->Equals(now))
+            return *it;
+    }
+}
 template<typename T>
 double Astar<T>::calculateH(State<T> *now, State<T> *goal) {
     int disX = goal->getState()->getX() - now->getState()->getX();

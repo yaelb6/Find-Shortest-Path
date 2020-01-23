@@ -134,12 +134,10 @@ list<State<T> *> Matrix<T>::getAllPossibleStates(State<T> *st) {
     if ((up->getX() >= minRow) && (matrix[i - 1][j]->getCost() != -1)) {
         adj.push_back(matrix[i - 1][j]);
     }
-
     //left neighbour
     if ((left->getY() >= minCol) && (matrix[i][j - 1]->getCost() != -1)) {
         adj.push_back(matrix[i][j - 1]);
     }
-
     return adj;
 }
 

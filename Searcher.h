@@ -48,7 +48,7 @@ string Searcher<T>::traceBack(State<T> *current, State<T> *initial) {
         else if (currX == nextX - 1) {
             pathCost += "Down (" + to_string((int)next->getCost()) + ")";
         }
-        //if step is Right
+            //if step is Right
         else if (currY == nextY - 1) {
             pathCost += "Right (" + to_string((int)next->getCost()) + ")";
         }
@@ -61,7 +61,7 @@ string Searcher<T>::traceBack(State<T> *current, State<T> *initial) {
             pathCost += " ,";
         }
     }
-    pathCost+="\n";
+    pathCost += "\n";
     return pathCost;
 }
 
