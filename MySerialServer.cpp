@@ -6,6 +6,8 @@
 #include "ObjectAdapter.h"
 #include "BFS.h"
 #include "Point.h"
+#include "DFS.h"
+#include "Astar.h"
 
 using namespace std;
 
@@ -82,10 +84,11 @@ void MySerialServer<P, S>::acceptClient(sockaddr_in address, ClientHandler<P, S>
 
 int boot::Main::main(int argc, char *argv) {
     Server<Matrix<Point*>, string> *server = new MySerialServer<Matrix<Point*>, string>();
-    Searcher<Point*> *searcher = new BFS<Point*>();
+    Searcher<Point*> *searcher = new Astar<Point*>();
     Solver<Matrix<Point*>, string> *solver = new ObjectAdapter<Matrix<Point*>, string, Point*>(searcher);
     CacheManager<Matrix<Point*>, string> *cache = new FileCacheManager<Matrix<Point*>, string>();
     ClientHandler<Matrix<Point*>, string> *clientHandler = new MyTestClientHandler<Matrix<Point*>, string>(solver, cache);
     server->open(5401, clientHandler);
+    std::cout << searcher->getNumberOfNodesEvaluated() << std::endl;
     return 0;
 }

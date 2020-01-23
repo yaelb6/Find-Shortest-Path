@@ -13,6 +13,7 @@ template<typename T>
 class DFS : public Searcher<T>{
 private:
     int numOfNodes;
+    bool finishRecur;
 public:
     string search(Searchable<T>* matrix);
     void DFSRecursive(State<T>* v, bool visited[], Searchable<T>* matrix);
@@ -46,18 +47,20 @@ void DFS<T>::DFSRecursive(State<T>* v, bool *visited, Searchable<T>* matrix) {
     //update the state was visited and insert to vector path
     int index = v->getIndex();
     visited[index] = true;
-    this->numOfNodes++;
     if (matrix->isGoalState(v)) {
+        this->finishRecur = true;
         return;
-    }
-    list<State<T>*> adj = matrix->getAllPossibleStates(v);
-    typename list<State<T>*>::iterator iter;
-    for(iter = adj.begin(); iter != adj.end(); ++iter){
-        iter->setCameFrom(v);
-        iter->setCost(v->getCost() + iter->getCost());
-        int adjIndex = iter->getIndex();
-        if (!visited[adjIndex]) {
-            DFSRecursive(iter, visited, matrix);
+    } else if (!this->finishRecur){
+        list<State<T> *> adj = matrix->getAllPossibleStates(v);
+        typename list<State<T> *>::iterator iter;
+        for (iter = adj.begin(); iter != adj.end(); iter++) {
+            int adjIndex = (*iter)->getIndex();
+            if (!visited[adjIndex]) {
+                this->numOfNodes++;
+                (*iter)->setCameFrom(v);
+                (*iter)->setCost(v->getCost() + (*iter)->getCost());
+                DFSRecursive(*iter, visited, matrix);
+            }
         }
     }
 }
@@ -70,6 +73,7 @@ int DFS<T>::getNumberOfNodesEvaluated() {
 template<typename T>
 DFS<T>::DFS() {
     this->numOfNodes = 0;
+    this->finishRecur = false;
 }
 
 template<typename T>
