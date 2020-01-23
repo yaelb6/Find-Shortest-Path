@@ -24,7 +24,7 @@ public:
     bool hasSolution(P problem) override {
         vector<string> matrixString;
         string allString = "";
-        Matrix<State<Point*>*> *matrix = dynamic_cast<Matrix<State<Point*>*>*>(&problem);
+        Matrix<Point*> *matrix = dynamic_cast<Matrix<Point*>*>(&problem);
         if(matrix) {
             matrixString = matrix->getMatAsString();
             for (unsigned int i = 0; i < matrixString.size(); i++) {
@@ -39,7 +39,7 @@ public:
     void save(string fileContent, P problem) override {
         vector<string> matrixString;
         string allString = "";
-        Matrix<State<Point*>*> *matrix = dynamic_cast<Matrix<State<Point*>*>*>(&problem);
+        Matrix<Point*> *matrix = dynamic_cast<Matrix<Point*>*>(&problem);
         if(matrix) {
             matrixString = matrix->getMatAsString();
             for (unsigned int i = 0; i < matrixString.size(); i++) {
@@ -57,14 +57,15 @@ public:
     string getSolution(P problem) override {
         vector<string> matrixString;
         string allString = "";
-        Matrix<State<Point*>*> *matrix = dynamic_cast<Matrix<State<Point*>*>*>(&problem);
+        Matrix<Point*> *matrix = dynamic_cast<Matrix<Point*>*>(&problem);
         if(matrix) {
             matrixString = matrix->getMatAsString();
             for (unsigned int i = 0; i < matrixString.size(); i++) {
                 allString += matrixString[i];
             }
         }
-        iter = filesMap.find(allString);
+        size_t num = hashString(allString);
+        iter = filesMap.find(to_string(num) + ".txt");
         if (iter != filesMap.end()) {
             return iter->first;
         }

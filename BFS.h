@@ -59,9 +59,9 @@ string BFS<T>::search(Searchable<T>* matrix) {
         } else {
             list<State<T> *> adj = matrix->getAllPossibleStates(node);
             for (it = adj.begin(); it != adj.end(); it++) {
-                (*it)->setCameFrom(node);
-                (*it)->setCost(node->getCost() + (*it)->getCost());
                 if (!visited[(*it)->getIndex()]) {
+                    (*it)->setCameFrom(node);
+                    (*it)->setCost(node->getCost() + (*it)->getCost());
                     visited[(*it)->getIndex()] = true;
                     this->numOfNodes++;
                     queue.push_back(*it);
