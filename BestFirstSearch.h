@@ -19,12 +19,17 @@ public:
 
     virtual ~BestFirstSearch();
 
-    string search(Searchable<T>* matrix);
+    string search(Searchable<T> *matrix);
+
     int getNumberOfNodesEvaluated();
+
+    bool contains(list<State<T> *> queue, State<T> *currentState);
+
+    void saveMinVal(list<State<T> *> queue, State<T> *node);
 };
 
 template<typename T>
-string BestFirstSearch<T>::search(Searchable<T>* matrix) {
+string BestFirstSearch<T>::search(Searchable<T> *matrix) {
     int size = 0;
     State<T> *initial;
     State<T> *node;
@@ -42,33 +47,33 @@ string BestFirstSearch<T>::search(Searchable<T>* matrix) {
     list<State<T> *> priorityQueue;
     typename list<State<T> *>::iterator it;
 
-    //mark the first as visited
-    visited[initial->getIndex()] = true;
+
     this->numOfNodes++;
     priorityQueue.push_back(initial);
     while (!priorityQueue.empty()) {
         //remove the current node from queue
         node = priorityQueue.front();
+        this->numOfNodes++;
         priorityQueue.pop_front();
+        visited[node->getIndex()] = true;
         //if the current node is the goal
         if (matrix->isGoalState(node)) {
             return Searcher<T>::traceBack(matrix->getGoalState(), matrix->getInitialState());
         } else {
             list<State<T> *> adj = matrix->getAllPossibleStates(node);
             for (it = adj.begin(); it != adj.end(); it++) {
-                it->setCameFrom(node);
-                it->setCost(node->getCost() + it->getCost());
-                if ((!visited[it->getIndex()]) && (!contains(priorityQueue, node))) {
-                    node = it;
-                    priorityQueue.push_back(it);
-                    this->numOfNodes++;
+                if ((!visited[(*it)->getIndex()]) && (!contains(priorityQueue, (*it)))) {
+                    (*it)->setCameFrom(node);
+                    (*it)->setCost(node->getCost() + (*it)->getCost());
+                    priorityQueue.push_back(*it);
                 }
                     //if the state is not in visited but in open,
                     //check is the min cost is already the cost
-                else if (!visited[it->getIndex()]) {
-                    visited[it->getIndex()] = true;
-                    this->numOfNodes++;
-                    saveMinVal(priorityQueue, node);
+                else if (!visited[(*it)->getIndex()]) {
+                    State<T> *temp = *it;
+                    temp->setCost(temp->getCost() - temp->getCameFrom()->getCost() + node->getCost());
+                    temp->setCameFrom(node);
+                    saveMinVal(priorityQueue, temp);
                 }
             }
         }
@@ -91,7 +96,7 @@ int BestFirstSearch<T>::getNumberOfNodesEvaluated() {
 }
 
 template<typename T>
-bool contains(list<State<T> *> queue, State<T> currentState) {
+bool BestFirstSearch<T>::contains(list<State<T> *> queue, State<T> *currentState) {
     for (auto it = queue.begin(); it != queue.end(); it++) {
         State<T> *s = *it;
         if (s->Equals(currentState))
@@ -101,19 +106,19 @@ bool contains(list<State<T> *> queue, State<T> currentState) {
 }
 
 template<typename T>
-void saveMinVal(list<State<T> *> queue, State<T> node) {
+void BestFirstSearch<T>::saveMinVal(list<State<T> *> queue, State<T> *temp) {
     for (auto it = queue.begin(); it != queue.end(); it++) {
         State<T> *s = *it;
-        if (s->Equals(node)) {
-            if (node.getCost() < s->getCost()) {
+        if (s->Equals(temp)) {
+            if (temp->getCost() < s->getCost()) {
                 queue.erase(it);
-                queue.insert(node);
+                queue.push_back(temp);
             }
             return;
         }
     }
-    queue.insert(node);
-    return;
+//    queue.push_back(temp);
+//    return;
 }
 
 

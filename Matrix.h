@@ -122,13 +122,13 @@ list<State<T> *> Matrix<T>::getAllPossibleStates(State<T> *st) {
     Point *left = new Point(i, j - 1);
     Point *down = new Point(i + 1, j);
     //check if every neighbour is legal
-    //right neighbour
-    if ((right->getY() <= maxCol) && (matrix[i][j + 1]->getCost() != -1)) {
-        adj.push_back(matrix[i][j + 1]);
-    }
     //down neighbour
     if ((down->getX() <= maxRow) && (matrix[i + 1][j]->getCost() != -1)) {
         adj.push_back(matrix[i + 1][j]);
+    }
+    //right neighbour
+    if ((right->getY() <= maxCol) && (matrix[i][j + 1]->getCost() != -1)) {
+        adj.push_back(matrix[i][j + 1]);
     }
     //up neighbour
     if ((up->getX() >= minRow) && (matrix[i - 1][j]->getCost() != -1)) {

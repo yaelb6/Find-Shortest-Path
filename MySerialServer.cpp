@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "DFS.h"
 #include "Astar.h"
+#include "BestFirstSearch.h"
 
 using namespace std;
 
