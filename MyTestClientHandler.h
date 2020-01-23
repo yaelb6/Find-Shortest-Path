@@ -34,21 +34,22 @@ template<typename P, typename S>
 void MyTestClientHandler<P, S>::handleClient(int socket) {
     char buffer[1024] = "";
     vector<string> vectorString;
+    string s = "";
     while (read(socket, buffer, 1024) > 0) {
         //converting char array to string
-        string s = "";
         for (unsigned int i = 0; i < sizeof(buffer); i++) {
             if (buffer[i] == '\n') {
-                break;
+                i++;
+                //string is "end", ending connection with client
+                if (s == "end") {
+                    close(socket);
+                    break;
+                } else {
+                    vectorString.push_back(s);
+                    s = "";
+                }
             }
             s = s + buffer[i];
-        }
-        //string is "end", ending connection with client
-        if (s == "end") {
-            close(socket);
-            break;
-        } else {
-            vectorString.push_back(s);
         }
     }
     Matrix<Point*> *matrix = new Matrix<Point*>(vectorString);

@@ -82,11 +82,12 @@ Matrix<T>::Matrix(vector <string> matAsString) {
         mtx.push_back(line);
     }
     this->matrix = mtx;
-    vector <string> splitInitial = split(matAsString[size-2], ",");
+    this->size = i;
+    vector <string> splitInitial = split(matAsString[size], ",");
     int xInitial = stoi(splitInitial[0]);
     int yInitial = stoi(splitInitial[1]);
     this->initial = matrix[xInitial][yInitial];
-    vector <string> splitGoal = split(matAsString[size-1], ",");
+    vector <string> splitGoal = split(matAsString[size+1], ",");
     int xGoal = stoi(splitInitial[0]);
     int yGoal = stoi(splitInitial[1]);
     this->goal = matrix[xGoal][yGoal];
