@@ -88,8 +88,8 @@ Matrix<T>::Matrix(vector <string> matAsString) {
     int yInitial = stoi(splitInitial[1]);
     this->initial = matrix[xInitial][yInitial];
     vector <string> splitGoal = split(matAsString[size+1], ",");
-    int xGoal = stoi(splitInitial[0]);
-    int yGoal = stoi(splitInitial[1]);
+    int xGoal = stoi(splitGoal[0]);
+    int yGoal = stoi(splitGoal[1]);
     this->goal = matrix[xGoal][yGoal];
 }
 
@@ -135,7 +135,7 @@ list<State<T> *> Matrix<T>::getAllPossibleStates(State<T> *st) {
         adj.push_back(matrix[i][j - 1]);
     }
     //down neighbour
-    if ((down->getY() <= maxRow) && (matrix[i + 1][j]->getCost() != -1)) {
+    if ((down->getX() <= maxRow) && (matrix[i + 1][j]->getCost() != -1)) {
         adj.push_back(matrix[i + 1][j]);
     }
     return adj;

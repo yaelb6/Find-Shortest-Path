@@ -75,6 +75,7 @@ void MySerialServer<P, S>::acceptClient(sockaddr_in address, ClientHandler<P, S>
         } else {
             std::cout << "Client was connected" << std::endl;
             client->handleClient(client_socket);
+            this->stop(socketfd);
         }
     }
 }
@@ -85,6 +86,6 @@ int boot::Main::main(int argc, char *argv) {
     Solver<Matrix<Point*>, string> *solver = new ObjectAdapter<Matrix<Point*>, string, Point*>(searcher);
     CacheManager<Matrix<Point*>, string> *cache = new FileCacheManager<Matrix<Point*>, string>();
     ClientHandler<Matrix<Point*>, string> *clientHandler = new MyTestClientHandler<Matrix<Point*>, string>(solver, cache);
-    server->open(5400, clientHandler);
+    server->open(5401, clientHandler);
     return 0;
 }

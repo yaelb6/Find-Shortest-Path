@@ -42,23 +42,23 @@ string Astar<T>::search(Searchable<T>* matrix) {
         list<State<T>*> adj = matrix->getAllPossibleStates(now->second);
         for (auto iter = adj.begin(); iter != adj.end(); iter++) {
             //if state is in closed list, continue
-            if (!isInSet(closeList, iter)) {
+            if (!isInSet(closeList, *iter)) {
                 continue;
             }
             //if the adj is goal state, update state we came from and call traceBack
-            if (matrix->isGoalState(iter)) {
-                iter->setCameFrom(now->second);
-                return traceBack(iter);
+            if (matrix->isGoalState(*iter)) {
+                (*iter)->setCameFrom(now->second);
+                return traceBack(*iter);
             }
             else {
-                double h = calculateH(iter, matrix->getGoalState());
-                double f = (h + (iter->getCost()));
+                double h = calculateH((*iter), matrix->getGoalState());
+                double f = (h + ((*iter)->getCost()));
                 //adding to openList if doesn't exist there or if exist but f smaller than now->first(previous f value)
-                if ((!isInSet(openList, iter)) || ((isInSet(openList, iter)) && (f < now->first))) {
-                    openList.insert(make_pair(f, iter));
+                if ((!isInSet(openList, (*iter))) || ((isInSet(openList, (*iter))) && (f < now->first))) {
+                    openList.insert(make_pair(f, *iter));
                     //updating values of state
-                    iter->setCameFrom(now->second);
-                    iter->setCost(iter->getCost + now->second->getCost());
+                    (*iter)->setCameFrom(now->second);
+                    (*iter)->setCost((*iter)->getCost + now->second->getCost());
                 }
             }
         }
@@ -74,7 +74,7 @@ template<typename T>
 bool Astar<T>::isInSet(set<pair<double, State<T> *>> set, State<T> * now) {
     for (auto it = set.begin(); it != set.end(); it++)
     {
-        State<T>* s = it->second;
+        State<T>* s = (*it)->second;
         if(s->Equals(now))
             return true;
     }

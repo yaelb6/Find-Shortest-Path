@@ -15,6 +15,9 @@
 #include <cstring>
 #include <vector>
 #include <fstream>
+#include <iostream>
+#include <ratio>
+#include <thread>
 
 template<typename P, typename S>
 class MyTestClientHandler : public ClientHandler<P,S>{
@@ -32,26 +35,41 @@ public:
 
 template<typename P, typename S>
 void MyTestClientHandler<P, S>::handleClient(int socket) {
+    std::cout << "Im in handle" << std::endl;
     char buffer[1024] = "";
     vector<string> vectorString;
     string s = "";
+    int count=0;
+    chrono::duration<int, milli> d(1000);
     while (read(socket, buffer, 1024) > 0) {
+        this_thread::sleep_for(d);
         //converting char array to string
         for (unsigned int i = 0; i < sizeof(buffer); i++) {
-            if (buffer[i] == '\n') {
-                i++;
+            if((buffer[i] == '\0') || (buffer[i] == ' ')){
+                continue;
+            }
+            if (buffer[i] == '\n'){
                 //string is "end", ending connection with client
                 if (s == "end") {
-                    close(socket);
+                    //close(socket);
                     break;
                 } else {
+                    count++;
+                    std::cout << count << std::endl;
                     vectorString.push_back(s);
+                    std::cout << s << std::endl;
                     s = "";
+                    continue;
                 }
             }
             s = s + buffer[i];
         }
+        if (s == "end") {
+            //close(socket);
+            break;
+        }
     }
+    std::cout << "finish to read" << std::endl;
     Matrix<Point*> *matrix = new Matrix<Point*>(vectorString);
 
     string fileName, solToClient, contentFile;
@@ -77,6 +95,7 @@ void MyTestClientHandler<P, S>::handleClient(int socket) {
     char* solutionString = const_cast<char *>(solToClient.c_str());
     //sending the solution to client
     send(socket , solutionString , strlen(solutionString) , 0);
+    close(socket);
 }
 
 

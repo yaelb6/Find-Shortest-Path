@@ -42,19 +42,19 @@ string Searcher<T>::traceBack(State<T> *current, State<T> *initial) {
         nextY = next->getState()->getY();
         //if step is Up
         if (currX == nextX + 1) {
-            pathCost += "Up (" + to_string(next->getCost()) + ")";
+            pathCost += "Up (" + to_string((int)next->getCost()) + ")";
         }
         //if step is Down
         else if (currX == nextX - 1) {
-            pathCost += "Down (" + to_string(next->getCost()) + ")";
+            pathCost += "Down (" + to_string((int)next->getCost()) + ")";
         }
         //if step is Right
         else if (currY == nextY - 1) {
-            pathCost += "Right (" + to_string(next->getCost()) + ")";
+            pathCost += "Right (" + to_string((int)next->getCost()) + ")";
         }
         //if step is Left
         else {
-            pathCost += "Left (" + to_string(next->getCost()) + ")";
+            pathCost += "Left (" + to_string((int)next->getCost()) + ")";
         }
         //add comma after every step, except if it's the last step
         if (i != path.size() - 2) {
