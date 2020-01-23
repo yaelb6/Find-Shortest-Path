@@ -52,15 +52,15 @@ string BestFirstSearch<T>::search(Searchable<T> matrix) {
         priorityQueue.pop_front();
         //if the current node is the goal
         if (matrix.isGoalState(node)) {
-            return traceBack(node);
+            return Searcher<T>::traceBack(matrix.getGoalState(), matrix.getInitialState());
         } else {
             list<State<T> *> adj = matrix.getAllPossibleStates(node);
             for (it = adj.begin(); it != adj.end(); it++) {
                 if (it->getCost() == -1) {
                     continue;
                 }
-//                it->setCameFrom(node);
-//                it->setCost(node->getCost() + it->getCost());
+                it->setCameFrom(node);
+                it->setCost(node->getCost() + it->getCost());
                 if ((!visited[it->getIndex()]) && (!contains(priorityQueue, node))) {
                     node = it;
                     priorityQueue.push_back(it);

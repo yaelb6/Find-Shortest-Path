@@ -36,7 +36,7 @@ string Astar<T>::search(Searchable<T> matrix) {
 
         //check if now has the goal state
         if (matrix.isGoalState(now->second)){
-            return traceBack(matrix.getGoalState());
+            return Searcher<T>::traceBack(matrix.getGoalState(), matrix.getInitialState());
         }
         //if now doesn't have goal state, we will pass over the adj of the state now has
         list<State<T>*> adj = matrix.getAllPossibleStates(now->second);
