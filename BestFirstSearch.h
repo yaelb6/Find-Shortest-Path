@@ -19,12 +19,12 @@ public:
 
     virtual ~BestFirstSearch();
 
-    string search(Searchable<T> matrix);
+    string search(Searchable<T>* matrix);
     int getNumberOfNodesEvaluated();
 };
 
 template<typename T>
-string BestFirstSearch<T>::search(Searchable<T> matrix) {
+string BestFirstSearch<T>::search(Searchable<T>* matrix) {
     int size = 0;
     State<T> *initial;
     State<T> *node;
@@ -51,14 +51,11 @@ string BestFirstSearch<T>::search(Searchable<T> matrix) {
         node = priorityQueue.front();
         priorityQueue.pop_front();
         //if the current node is the goal
-        if (matrix.isGoalState(node)) {
-            return Searcher<T>::traceBack(matrix.getGoalState(), matrix.getInitialState());
+        if (matrix->isGoalState(node)) {
+            return Searcher<T>::traceBack(matrix->getGoalState(), matrix->getInitialState());
         } else {
-            list<State<T> *> adj = matrix.getAllPossibleStates(node);
+            list<State<T> *> adj = matrix->getAllPossibleStates(node);
             for (it = adj.begin(); it != adj.end(); it++) {
-                if (it->getCost() == -1) {
-                    continue;
-                }
                 it->setCameFrom(node);
                 it->setCost(node->getCost() + it->getCost());
                 if ((!visited[it->getIndex()]) && (!contains(priorityQueue, node))) {

@@ -14,8 +14,8 @@ class DFS : public Searcher<T>{
 private:
     int numOfNodes;
 public:
-    string search(Searchable<T> matrix);
-    void DFSRecursive(State<T>* v, bool visited[], Searchable<T> matrix);
+    string search(Searchable<T>* matrix);
+    void DFSRecursive(State<T>* v, bool visited[], Searchable<T>* matrix);
     int getNumberOfNodesEvaluated();
 
     virtual ~DFS();
@@ -24,7 +24,7 @@ public:
 };
 
 template<typename T>
-string DFS<T>::search(Searchable<T> matrix) {
+string DFS<T>::search(Searchable<T>* matrix) {
     int size;
     auto *isMatrix = dynamic_cast<Matrix<T>*>(matrix);
     if(isMatrix) {
@@ -38,25 +38,21 @@ string DFS<T>::search(Searchable<T> matrix) {
     }
     //calling recursive function of dfs with the initialState
     DFSRecursive(matrix->getInitialState(), visited, matrix);
-    return Searcher<T>::traceBack(matrix.getGoalState(), matrix.getInitialState());
+    return Searcher<T>::traceBack(matrix->getGoalState(), matrix->getInitialState());
 }
 
 template<typename T>
-void DFS<T>::DFSRecursive(State<T>* v, bool *visited, Searchable<T> matrix) {
+void DFS<T>::DFSRecursive(State<T>* v, bool *visited, Searchable<T>* matrix) {
     //update the state was visited and insert to vector path
     int index = v->getIndex();
     visited[index] = true;
     this->numOfNodes++;
-    if (matrix.isGoalState(v)) {
+    if (matrix->isGoalState(v)) {
         return;
     }
-    list<State<T>*> adj = matrix.getAllPossibleStates(v);
+    list<State<T>*> adj = matrix->getAllPossibleStates(v);
     typename list<State<T>*>::iterator iter;
     for(iter = adj.begin(); iter != adj.end(); ++iter){
-        //if it's a block adj
-        if(iter->getCost() == -1) {
-            continue;
-        }
         iter->setCameFrom(v);
         iter->setCost(v->getCost() + iter->getCost());
         int adjIndex = iter->getIndex();

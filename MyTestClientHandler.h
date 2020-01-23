@@ -34,7 +34,6 @@ template<typename P, typename S>
 void MyTestClientHandler<P, S>::handleClient(int socket) {
     char buffer[1024] = "";
     vector<string> vectorString;
-    string allStrings = "";
     while (read(socket, buffer, 1024) > 0) {
         //converting char array to string
         string s = "";
@@ -44,7 +43,6 @@ void MyTestClientHandler<P, S>::handleClient(int socket) {
             }
             s = s + buffer[i];
         }
-        allStrings += s;
         //string is "end", ending connection with client
         if (s == "end") {
             close(socket);
@@ -53,22 +51,22 @@ void MyTestClientHandler<P, S>::handleClient(int socket) {
             vectorString.push_back(s);
         }
     }
-    Matrix<State<Point*>*> *matrix = new Matrix<State<Point*>*>(vectorString);
+    Matrix<Point*> *matrix = new Matrix<Point*>(vectorString);
 
     string fileName, solToClient, contentFile;
     //if string exist in fileCacheManager
-    if (fileCache->hasSolution(allStrings)) {
+    if (fileCache->hasSolution(*matrix)) {
         //return file name
-        fileName = fileCache->getSolution(allStrings);
+        fileName = fileCache->getSolution(*matrix);
     }
     //calling the solver to find solution for problem
     else {
         //return file content
-        contentFile = solver->solve(matrix);
+        contentFile = solver->solve(*matrix);
         //save file in cache
-        fileCache->save(contentFile, allStrings);
+        fileCache->save(contentFile, *matrix);
         //return file name
-        fileName = fileCache->getSolution(allStrings);
+        fileName = fileCache->getSolution(*matrix);
     }
     ifstream readSolution(fileName);
     if (readSolution) {

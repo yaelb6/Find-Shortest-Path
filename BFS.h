@@ -18,7 +18,7 @@ class BFS : public Searcher<T> {
 private:
     int numOfNodes;
 public:
-    string search(Searchable<T> matrix);
+    string search(Searchable<T>* matrix);
 
     BFS();
 
@@ -28,7 +28,7 @@ public:
 };
 
 template<typename T>
-string BFS<T>::search(Searchable<T> matrix) {
+string BFS<T>::search(Searchable<T>* matrix) {
     int size = 0;
     State<T> *initial, *node;
     auto *mtx = dynamic_cast<Matrix<T> *>(matrix);
@@ -54,20 +54,17 @@ string BFS<T>::search(Searchable<T> matrix) {
         node = queue.front();
         queue.pop_front();
         //if the current node is the goal
-        if (matrix.isGoalState(node)) {
-            return Searcher<T>::traceBack(matrix.getGoalState(), matrix.getInitialState());
+        if (matrix->isGoalState(node)) {
+            return Searcher<T>::traceBack(matrix->getGoalState(), matrix->getInitialState());
         } else {
-            list<State<T> *> adj = matrix.getAllPossibleStates(node);
+            list<State<T> *> adj = matrix->getAllPossibleStates(node);
             for (it = adj.begin(); it != adj.end(); it++) {
-                if (it->getCost() == -1) {
-                    continue;
-                }
-                it->setCameFrom(node);
-                it->setCost(node->getCost() + it->getCost());
-                if (!visited[it->getIndex()]) {
-                    visited[it->getIndex()] = true;
+                (*it)->setCameFrom(node);
+                (*it)->setCost(node->getCost() + (*it)->getCost());
+                if (!visited[(*it)->getIndex()]) {
+                    visited[(*it)->getIndex()] = true;
                     this->numOfNodes++;
-                    queue.push_back(it);
+                    queue.push_back(*it);
                 }
             }
         }

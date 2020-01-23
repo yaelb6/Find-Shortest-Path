@@ -7,10 +7,10 @@
 
 
 class Point {
-public:
+private:
     int x;
     int y;
-
+public:
     void setX(int x);
 
     void setY(int y);
@@ -19,7 +19,7 @@ public:
 
     int getY() const;
     Point(int x, int y);
-    bool Equals(Point point1, Point point2);
+    bool Equals(Point* point1);
 };
 
 

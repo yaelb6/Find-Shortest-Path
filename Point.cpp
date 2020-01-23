@@ -25,6 +25,6 @@ void Point::setY(int newY) {
     Point::y = newY;
 }
 
-bool Point::Equals(Point point1, Point point2) {
-    return ((point1.getX() == point2.getX()) && (point1.getY() == point2.getY()));
+bool Point::Equals(Point* point1) {
+    return ((this->x == point1->getX()) && (this->y == point1->getY()));
 }

@@ -12,12 +12,14 @@
 template<typename P, typename S, typename T>
 class ObjectAdapter : public Solver<P, S> {
 private:
-    Searcher<T> searcher;
+    Searcher<T>* searcher;
 public:
-    ObjectAdapter(const Searcher<T> &searcher) : searcher(searcher) {
+//    ObjectAdapter(const Searcher<T> &searcher) : searcher(searcher) {
+//        this->searcher = searcher;
+//    }
+    ObjectAdapter(Searcher<T>* searcher) {
         this->searcher = searcher;
     }
-
     virtual ~ObjectAdapter() {}
 
     const Searcher<T> &getSearcher() const {
@@ -29,9 +31,9 @@ public:
     }
 
     S solve(P problem) {
-        Searchable<T> *searchable = dynamic_cast<Searchable<T> *>(problem);
+        Searchable<T> *searchable = dynamic_cast<Searchable<T> *>(&problem);
         if (searchable) {
-            return searcher.search(searchable);
+            return searcher->search(searchable);
         }
     }
 };
