@@ -7,7 +7,8 @@
 
 #include "Server.h"
 #include "MyParallelServer.h"
-#include "StringReverser.h"
+#include "ObjectAdapter.h"
+#include "BFS.h"
 #include "FileCacheManager.h"
 #include "MyTestClientHandler.h"
 #include "ClientHandler.h"

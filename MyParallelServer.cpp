@@ -3,21 +3,6 @@
 //
 
 #include "MyParallelServer.h"
-#include "Server.h"
-#include "MyParallelServer.h"
-#include "StringReverser.h"
-#include "FileCacheManager.h"
-#include "MyTestClientHandler.h"
-#include "ClientHandler.h"
-#include "Astar.h"
-#include "ObjectAdapter.h"
-#include <sys/socket.h>
-#include <string>
-#include <iostream>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <thread>
-#include <pthread.h>
 
 using namespace std;
 
@@ -115,13 +100,17 @@ void *MyParallelServer<P, S>::acceptThreadClient(void *fieldsThread) {
     delete data;
 }
 
-int boot::Main::main(int argc, char *argv) {
+int boot::Main::main(int argc, int argv) {
     Server<Matrix<Point*>, string> *server = new MyParallelServer<Matrix<Point*>, string>();
     Searcher<Point*> *searcher = new Astar<Point*>();
     Solver<Matrix<Point*>, string> *solver = new ObjectAdapter<Matrix<Point*>, string, Point*>(searcher);
     CacheManager<Matrix<Point*>, string> *cache = new FileCacheManager<Matrix<Point*>, string>();
     ClientHandler<Matrix<Point*>, string> *clientHandler = new MyTestClientHandler<Matrix<Point*>, string>(solver, cache);
-    server->open(5401, clientHandler);
+    if (argc > 0) {
+        server->open(argv, clientHandler);
+    } else {
+        server->open(5400, clientHandler);
+    }
     std::cout << searcher->getNumberOfNodesEvaluated() << std::endl;
     return 0;
 }

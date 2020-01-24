@@ -6,9 +6,10 @@
 #define EX4_MYPARALLELSERVER_H
 
 #include "Server.h"
-#include "StringReverser.h"
+#include "Solver.h"
 #include "FileCacheManager.h"
 #include "MyTestClientHandler.h"
+#include "MyParallelServer.h"
 #include "ClientHandler.h"
 #include <sys/socket.h>
 #include <string>
@@ -18,19 +19,10 @@
 #include <stack>
 #include <chrono>
 #include <unistd.h>
-#include "Solver.h"
-#include "Server.h"
-#include "MyParallelServer.h"
-#include "StringReverser.h"
-#include "FileCacheManager.h"
-#include "MyTestClientHandler.h"
-#include "ClientHandler.h"
-#include <sys/socket.h>
-#include <string>
-#include <iostream>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <thread>
+
+
+
+
 
 using namespace server_side;
 

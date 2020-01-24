@@ -23,6 +23,8 @@ namespace boot {
     class Main {
     public:
         static int main(int argc, char *argv);
+
+        static int main(int argc, int argv);
     };
 }
 #endif //EX4_JENNY_YAEL_SERVER_H
